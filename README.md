@@ -1,11 +1,8 @@
 ![](./docs/doxygen/images/gnss-sdr_logo.png)
 
-**Welcome to GNSS-SDR!**
-
-Visit [gnss-sdr.org](http://gnss-sdr.org "GNSS-SDR's Homepage") for more information about this open source GNSS software defined receiver.
-
-If you have questions about GNSS-SDR, please [subscribe to the gnss-sdr-developers mailing list](http://lists.sourceforge.net/lists/listinfo/gnss-sdr-developers "Subscribe to the gnss-sdr-developers mailing list" ) and post your questions there.
-
+**SDR based GPS Receiver**
+ 
+This repository is the primary repo of researchers at INTELL Lab, NUSt 
 
 
 # How to build GNSS-SDR
