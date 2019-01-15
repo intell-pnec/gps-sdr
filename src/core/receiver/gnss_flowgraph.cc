@@ -48,6 +48,8 @@
 #include "channel_interface.h"
 #include "gnss_block_factory.h"
 
+#include<iostream>
+#include<fstream>
 #define GNSS_SDR_ARRAY_SIGNAL_CONDITIONER_CHANNELS 8
 
 using google::LogMessage;
@@ -58,6 +60,8 @@ GNSSFlowgraph::GNSSFlowgraph(std::shared_ptr<ConfigurationInterface> configurati
     connected_ = false;
     running_ = false;
     configuration_ = configuration;
+
+
     queue_ = queue;
     init();
 }

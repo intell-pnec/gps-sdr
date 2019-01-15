@@ -36,8 +36,7 @@
 #include <glog/logging.h>
 #include "control_message_factory.h"
 #include "gnss_synchro.h"
-#include <fstream>
-using namespace std;
+
 #ifndef _rotl
 #define _rotl(X,N)  ((X << N) ^ (X >> (32-N)))  // Used in the parity check algorithm
 #endif
@@ -163,15 +162,6 @@ int gps_l1_ca_telemetry_decoder_cc::general_work (int noutput_items __attribute_
                     if (in[0][i].Prompt_I < 0)  // symbols clipping
                         {
                             corr_value -= d_preambles_symbols[i] * in[0][i].correlation_length_ms;
-                            ofstream myfile ("example.txt" , ios::app);
-                            if (myfile.is_open())
-                            {
-                              myfile << in[0][i].correlation_length_ms << '\n';
-                              myfile.close();
-                            }
-                            else cout << "Unable to open file";
-                           
-                            
                         }
                     else
                         {

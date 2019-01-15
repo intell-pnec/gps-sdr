@@ -196,26 +196,17 @@ int gps_l1_ca_observables_cc::general_work (int noutput_items, gr_vector_int &ni
             arma::vec acc_phase_vec_rads;
             arma::vec acc_phase_vec_interp_rads;
             arma::vec desired_symbol_TOW(1);
-            int count = 0;
             for(gnss_synchro_iter = current_gnss_synchro_map.begin(); gnss_synchro_iter != current_gnss_synchro_map.end(); gnss_synchro_iter++)
                 {
                     // compute the required symbol history shift in order to match the reference symbol
                     delta_rx_time_ms = gnss_synchro_iter->second.Prn_timestamp_ms - d_ref_PRN_rx_time_ms;
-                    ///edited open
-                    double new_TOW ; 
-                    new_TOW = gnss_synchro_iter->second.d_TOW_at_current_symbol;
-                    ////compute the pseudorange
-                    //if(count > 0)
-                    //{
-                    traveltime_ms = (d_TOW_reference - (new_TOW)) * 1000.0 + delta_rx_time_ms + GPS_STARTOFFSET_ms;
-                    //}
-                    //else if (count == 0)
-                    //{
-                    //traveltime_ms = (d_TOW_reference - new_TOW*1.5) * 1000.0 + delta_rx_time_ms + GPS_STARTOFFSET_ms;
-                    //}
+                    //compute the pseudorange
+                    traveltime_ms = (d_TOW_reference - gnss_synchro_iter->second.d_TOW_at_current_symbol) * 1000.0 + delta_rx_time_ms + GPS_STARTOFFSET_ms;
+                    
+		
+
                     //convert to meters and remove the receiver time offset in meters
                     pseudorange_m = traveltime_ms * GPS_C_m_ms; // [m]
-                    count = count + 1;
                     // update the pseudorange object
                     current_gnss_synchro[gnss_synchro_iter->second.Channel_ID] = gnss_synchro_iter->second;
                     current_gnss_synchro[gnss_synchro_iter->second.Channel_ID].Pseudorange_m = pseudorange_m;

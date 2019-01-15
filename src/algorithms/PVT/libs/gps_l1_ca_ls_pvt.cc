@@ -32,7 +32,8 @@
 #include "gps_l1_ca_ls_pvt.h"
 #include <gflags/gflags.h>
 #include <glog/logging.h>
-#include<cmath>
+#include<iostream>
+#include<fstream>
 
 using google::LogMessage;
 
@@ -91,11 +92,6 @@ bool gps_l1_ca_ls_pvt::get_PVT(std::map<int,Gnss_Synchro> gnss_pseudoranges_map,
     double SV_clock_bias_s = 0.0;
 
     d_flag_averaging = flag_averaging;
-Gnss_Synchro current_gnss_synchro[d_nchannels];
-    std::map<int,Gnss_Synchro> current_gnss_synchro_map;
-    std::map<int,Gnss_Synchro>::iterator gnss_synchro_iter;
-double p_temp;
-double p_range;
 
     // ********************************************************************************
     // ****** PREPARE THE LEAST SQUARES DATA (SV POSITIONS MATRIX AND OBS VECTORS) ****
@@ -132,13 +128,28 @@ double p_range;
                     satpos(0, valid_obs) = gps_ephemeris_iter->second.d_satpos_X;
                     satpos(1, valid_obs) = gps_ephemeris_iter->second.d_satpos_Y;
                     satpos(2, valid_obs) = gps_ephemeris_iter->second.d_satpos_Z;
+		
+// ...murad's changing start over here .....
+std::ofstream myfile("/home/gps/Desktop/data.txt",std::ios::app | std::ios::out);
+if(myfile.is_open()){
+myfile << std::setprecision(16);
+myfile << "Sat_PRN: "<< gps_ephemeris_iter->second.i_satellite_PRN <<","<< satpos(0,valid_obs) << ","<< satpos(1,valid_obs) << "," << satpos(2,valid_obs)<<","<<gnss_pseudoranges_iter->second.Pseudorange_m + dtr * GPS_C_m_s - d_rx_dt_s * GPS_C_m_s << std::endl;}
 
-                    //edited code
-                 //   p_temp = pow(24.111-gps_ephemeris_iter->second.d_satpos_X,2)+ pow(67.111-gps_ephemeris_iter->second.d_satpos_Y,2)+pow(14.111-gps_ephemeris_iter->second.d_satpos_Z,2);
-                 //  p_range = sqrt(p_temp);
-                    //current_gnss_synchro[gnss_synchro_iter->second.Channel_ID].Pseudorange_m = p_range;
 
-                    // 4- fill the observations vector with the corrected pseudoranges
+if(gps_ephemeris_iter->second.i_satellite_PRN==100){
+                   satpos(0, valid_obs) = gps_ephemeris_iter->second.d_satpos_X *0;
+                    satpos(1, valid_obs) = gps_ephemeris_iter->second.d_satpos_Y *0;
+                    satpos(2, valid_obs) = gps_ephemeris_iter->second.d_satpos_Z* 0;}
+
+
+if(gps_ephemeris_iter->second.i_satellite_PRN==100){
+	std::cout << "Orignial Eccentricity: " << gps_ephemeris_iter->second.murad_b << std::endl;
+	std::cout << "Shifted Eccentricity: " << gps_ephemeris_iter->second.murad_a << std::endl;
+}
+	//std::cout << valid_obs << " Satellite Position X: " << satpos(0,valid_obs) << " Y: " << satpos(1,valid_obs) << " Z: " << satpos(2,valid_obs) << std::endl;
+				                   
+
+ // 4- fill the observations vector with the corrected pseudoranges
                     obs.resize(valid_obs + 1, 1);
                     obs(valid_obs) = gnss_pseudoranges_iter->second.Pseudorange_m + dtr * GPS_C_m_s - d_rx_dt_s * GPS_C_m_s;
                     d_visible_satellites_IDs[valid_obs] = gps_ephemeris_iter->second.i_satellite_PRN;

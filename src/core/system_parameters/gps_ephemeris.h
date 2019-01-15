@@ -119,6 +119,10 @@ public:
     double d_satpos_X;       //!< Earth-fixed coordinate x of the satellite [m]. Intersection of the IERS Reference Meridian (IRM) and the plane passing through the origin and normal to the Z-axis.
     double d_satpos_Y;       //!< Earth-fixed coordinate y of the satellite [m]. Completes a right-handed, Earth-Centered, Earth-Fixed orthogonal coordinate system.
     double d_satpos_Z;       //!< Earth-fixed coordinate z of the satellite [m]. The direction of the IERS (International Earth Rotation and Reference Systems Service) Reference Pole (IRP).
+// Murad Variables
+
+double murad_a;
+double murad_b;
 
     // Satellite velocity
     double d_satvel_X;    //!< Earth-fixed velocity coordinate x of the satellite [m]

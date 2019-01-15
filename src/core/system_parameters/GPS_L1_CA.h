@@ -126,6 +126,7 @@ const std::vector<std::pair<int,int>> C_UC({{151,16}});
 const double C_UC_LSB = TWO_N29;
 const std::vector<std::pair<int,int>> E({{167,8},{181,24}});
 const double E_LSB = TWO_N33;
+
 const std::vector<std::pair<int,int>> C_US({{211,16}});
 const double C_US_LSB = TWO_N29;
 const std::vector<std::pair<int,int>> SQRT_A({{227,8},{241,24}});

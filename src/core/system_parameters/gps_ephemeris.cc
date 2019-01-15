@@ -43,7 +43,10 @@ Gps_Ephemeris::Gps_Ephemeris()
     d_Delta_n = 0;
     d_M_0 = 0;
     d_Cuc = 0;
+    murad_a=0;
+murad_b=0;
     d_e_eccentricity = 0;
+
     d_Cus = 0;
     d_sqrt_A = 0;
     d_Toe = 0;
@@ -199,8 +202,12 @@ double Gps_Ephemeris::satellitePosition(double transmitTime)
 
     // Find satellite's position ----------------------------------------------
 
+
+
     // Restore semi-major axis
     a = d_sqrt_A * d_sqrt_A;
+
+
 
     // Time from ephemeris reference epoch
     tk = check_t(transmitTime - d_Toe);
@@ -263,7 +270,6 @@ double Gps_Ephemeris::satellitePosition(double transmitTime)
     d_satpos_X = cos(u) * r * cos(Omega) - sin(u) * r * cos(i) * sin(Omega);
     d_satpos_Y = cos(u) * r * sin(Omega) + sin(u) * r * cos(i) * cos(Omega);
     d_satpos_Z = sin(u) * r * sin(i);
-   
 
     // Satellite's velocity. Can be useful for Vector Tracking loops
     double Omega_dot = d_OMEGA_DOT - OMEGA_EARTH_DOT;
@@ -278,6 +284,15 @@ double Gps_Ephemeris::satellitePosition(double transmitTime)
 
     /* relativity correction */
     dtr_s -= 2.0 * sqrt(GM * a) * d_e_eccentricity * sin(E) / (GPS_C_m_s * GPS_C_m_s);
+
+	murad_a= (d_Crc * cos(2.0 * phi) +  d_Crs * sin(2.0 * phi))/((-1.0 + d_e_eccentricity*cos(E)));
+	murad_b=a;
+
+/*murad modification ....*/
+
+
+
+
 
 
 

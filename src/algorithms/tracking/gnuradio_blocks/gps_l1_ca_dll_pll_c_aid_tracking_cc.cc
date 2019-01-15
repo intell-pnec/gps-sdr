@@ -43,10 +43,8 @@
 #include "tracking_discriminators.h"
 #include "lock_detectors.h"
 #include "GPS_L1_CA.h"
-#include <fstream>
 #include "control_message_factory.h"
 
-using namespace std;
 
 /*!
  * \todo Include in definition header file
@@ -547,7 +545,6 @@ int gps_l1_ca_dll_pll_c_aid_tracking_cc::general_work (int noutput_items __attri
                     if (d_preamble_synchronized == true)
                         {
                             current_synchro_data.correlation_length_ms = d_extend_correlation_ms;
-                            
                         }
                     else
                         {

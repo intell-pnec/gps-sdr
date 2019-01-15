@@ -33,6 +33,7 @@ m * \file gps_navigation_message.cc
 #include "gps_navigation_message.h"
 #include <cmath>
 #include <iostream>
+#include<fstream>
 #include <gnss_satellite.h>
 
 
@@ -467,20 +468,33 @@ int Gps_Navigation_Message::subframe_decoder(char *subframe)
         d_IODE_SF2 = static_cast<double>(read_navigation_unsigned(subframe_bits, IODE_SF2));
         d_Crs = static_cast<double>(read_navigation_signed(subframe_bits, C_RS));
         d_Crs = d_Crs * C_RS_LSB;
+
         d_Delta_n = static_cast<double>(read_navigation_signed(subframe_bits, DELTA_N));
         d_Delta_n = d_Delta_n * DELTA_N_LSB;
+
         d_M_0 = static_cast<double>(read_navigation_signed(subframe_bits, M_0));
         d_M_0 = d_M_0 * M_0_LSB;
+
+
         d_Cuc = static_cast<double>(read_navigation_signed(subframe_bits, C_UC));
         d_Cuc = d_Cuc * C_UC_LSB;
+
         d_e_eccentricity = static_cast<double>(read_navigation_unsigned(subframe_bits, E));
         d_e_eccentricity = d_e_eccentricity * E_LSB;
+
         d_Cus = static_cast<double>(read_navigation_signed(subframe_bits, C_US));
         d_Cus = d_Cus * C_US_LSB;
+
         d_sqrt_A = static_cast<double>(read_navigation_unsigned(subframe_bits, SQRT_A));
         d_sqrt_A = d_sqrt_A * SQRT_A_LSB;
+	
+// murad changinge done here...
+if(i_satellite_PRN==100){
+	d_sqrt_A=sqrt(275.026);
+}
         d_Toe = static_cast<double>(read_navigation_unsigned(subframe_bits, T_OE));
         d_Toe = d_Toe * T_OE_LSB;
+
         b_fit_interval_flag = read_navigation_bool(subframe_bits, FIT_INTERVAL_FLAG);
         i_AODO = static_cast<int>(read_navigation_unsigned(subframe_bits, AODO));
         i_AODO = i_AODO * AODO_LSB;
@@ -506,9 +520,11 @@ int Gps_Navigation_Message::subframe_decoder(char *subframe)
         d_Crc = d_Crc * C_RC_LSB;
         d_OMEGA = static_cast<double>(read_navigation_signed(subframe_bits, OMEGA));
         d_OMEGA = d_OMEGA * OMEGA_LSB;
+
         d_OMEGA_DOT = static_cast<double>(read_navigation_signed(subframe_bits, OMEGA_DOT));
         d_OMEGA_DOT = d_OMEGA_DOT * OMEGA_DOT_LSB;
         d_IODE_SF3 = static_cast<double>(read_navigation_unsigned(subframe_bits, IODE_SF3));
+
         d_IDOT = static_cast<double>(read_navigation_signed(subframe_bits, I_DOT));
         d_IDOT = d_IDOT * I_DOT_LSB;
 
@@ -642,6 +658,67 @@ int Gps_Navigation_Message::subframe_decoder(char *subframe)
         break;
     } // switch subframeID ...
 
+
+if (subframe_ID==1){
+	std::ofstream myfile_1;
+	std::string half_prn_1=std::to_string(i_satellite_PRN);
+	std::string whole_addr_1="/home/gps/Desktop/subframes/sat"+half_prn_1+"/subframe1_file.dat";
+	myfile_1.open(whole_addr_1,std::ios::app | std::ios::out | std::ios::binary);
+	myfile_1<< subframe_bits<< ","  << std::endl;
+
+	myfile_1.close();
+
+}
+if(subframe_ID==2){
+	std::ofstream myfile_2;
+	std::string half_prn_2=std::to_string(i_satellite_PRN);
+	std::string whole_addr_2="/home/gps/Desktop/subframes/sat"+half_prn_2+"/subframe2_file.dat";
+	myfile_2.open(whole_addr_2,std::ios::app | std::ios::out | std::ios::binary);
+	myfile_2<< subframe_bits<<"," << std::endl;
+	myfile_2.close();
+
+
+
+}
+
+
+if (subframe_ID==3){
+	std::ofstream myfile_3;
+	std::string half_prn3=std::to_string(i_satellite_PRN);
+	std::string whole_addr3="/home/gps/Desktop/subframes/sat"+half_prn3+"/subframe3_file.dat";
+	myfile_3.open(whole_addr3,std::ios::app | std::ios::out | std::ios::binary);
+	myfile_3<< subframe_bits<< "," << std::endl;
+	myfile_3.close();
+
+
+}
+if(subframe_ID==4){
+	std::ofstream myfile_4;
+	std::string half_prn4=std::to_string(i_satellite_PRN);
+	std::string whole_addr4="/home/gps/Desktop/subframes/sat"+half_prn4+"/subframe4_file.dat";
+	myfile_4.open(whole_addr4,std::ios::app | std::ios::out | std::ios::binary);
+	myfile_4<< subframe_bits<< ","  << std::endl;
+	myfile_4.close();
+
+
+}
+
+if(subframe_ID==5){
+	std::ofstream myfile_5;
+	std::string half_prn5=std::to_string(i_satellite_PRN);
+	std::string whole_addr5="/home/gps/Desktop/subframes/sat"+half_prn5+"/subframe5_file.dat";
+	myfile_5.open(whole_addr5,std::ios::app | std::ios::out | std::ios::binary);
+	myfile_5<< subframe_bits<< "," << std::endl;
+	myfile_5.close();
+
+
+}
+
+
+
+
+
+
     return subframe_ID;
 }
 
@@ -727,7 +804,9 @@ Gps_Ephemeris Gps_Navigation_Message::get_ephemeris()
     ephemeris.d_e_eccentricity = d_e_eccentricity;
     ephemeris.d_Cus = d_Cus;
     ephemeris.d_sqrt_A = d_sqrt_A;
+
     ephemeris.d_Toe = d_Toe;
+
     ephemeris.d_Toc = d_Toc;
     ephemeris.d_Cic = d_Cic;
     ephemeris.d_OMEGA0 = d_OMEGA0;
